@@ -1,15 +1,38 @@
-name: Create AMI Workflow
+name: Build AMI Workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to push AMI to'
+        required: true
+        default: 'Dev' # Default environment, change as needed
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+  pull-requests: write
 
 jobs:
-  build-ami:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Build AMI
-        run: ./scripts/build_ami.sh
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1
+          role-session-name: GitHub-OIDC-TERRAFORM
+
+      - name: Make script executable and run
+        run: |
+          chmod +x ./scripts/build_ami.sh
+          ./scripts/build_ami.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
