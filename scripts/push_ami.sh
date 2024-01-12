@@ -6,12 +6,16 @@ environment=$1
 # Modify this section based on your specific AMI sharing or copying process
 
 case "$environment" in
-  development)
-    echo "Pushing AMI to Development AWS account"
+  Dev)
+    echo "Pushing AMI to Dev AWS account"
     # Add logic to share or copy AMI to the Development AWS account
     ;;
-  production)
-    echo "Pushing AMI to Production AWS account"
+  QA)
+    echo "Pushing AMI to QA AWS account"
+    # Add logic to share or copy AMI to the Development AWS account
+    ;;
+  Prod)
+    echo "Pushing AMI to Prod AWS account"
     # Add logic to share or copy AMI to the Production AWS account
     ;;
   *)
