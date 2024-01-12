@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to push AMI to'
+        type: choice
+        description: Select the environment
         required: true
-        default: 'Dev' # Default environment, change as needed
+        options:
+          - Dev
+          - QA
+          - Prod
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -15,6 +19,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Dev
 
     steps:
       # - name: Checkout code
