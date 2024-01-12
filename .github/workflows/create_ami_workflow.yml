@@ -1,0 +1,15 @@
+name: Create AMI Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build AMI
+        run: ./scripts/build_ami.sh
